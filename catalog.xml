@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:/C:/Users/baci/AppData/Roaming/NetBeans/8.2/config/WebServices/BaseInfoService-svc/catalog/ddmp.audi-online.cn_86/BaseInfoService.svc.wsdl" uri="src/conf/xml-resources/web-service-references/BaseInfoService.svc/wsdl/BaseInfoService.svc.wsdl"/>
+    <system systemId="http://49.4.65.83:86/DDMPServiceForNewOfficeWebSite.svc?wsdl" uri="src/conf/xml-resources/web-service-references/DDMPServiceForNewOfficeWebSite/wsdl/49.4.65.83_86/DDMPServiceForNewOfficeWebSite.svc.wsdl"/>
+    <system systemId="http://49.4.65.83:86/DDMPServiceForNewOfficeWebSite.svc?xsd=xsd0" uri="src/conf/xml-resources/web-service-references/DDMPServiceForNewOfficeWebSite/wsdl/49.4.65.83_86/DDMPServiceForNewOfficeWebSite.svc.xsd_xsd0.xsd"/>
+    <system systemId="http://49.4.65.83:86/DDMPServiceForNewOfficeWebSite.svc?xsd=xsd1" uri="src/conf/xml-resources/web-service-references/DDMPServiceForNewOfficeWebSite/wsdl/49.4.65.83_86/DDMPServiceForNewOfficeWebSite.svc.xsd_xsd1.xsd"/>
+    <system systemId="http://ddmp.audi-online.cn:86/BaseInfoService.svc?wsdl" uri="src/conf/xml-resources/web-service-references/BaseInfoService/wsdl/ddmp.audi-online.cn_86/BaseInfoService.svc.wsdl"/>
+    <system systemId="http://ddmp.audi-online.cn:86/BaseInfoService.svc?xsd=xsd0" uri="src/conf/xml-resources/web-service-references/BaseInfoService/wsdl/ddmp.audi-online.cn_86/BaseInfoService.svc.xsd_xsd0.xsd"/>
+    <system systemId="http://ddmp.audi-online.cn:86/BaseInfoService.svc?xsd=xsd1" uri="src/conf/xml-resources/web-service-references/BaseInfoService/wsdl/ddmp.audi-online.cn_86/BaseInfoService.svc.xsd_xsd1.xsd"/>
+</catalog>

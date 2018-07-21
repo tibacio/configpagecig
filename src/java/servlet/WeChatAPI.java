@@ -14,8 +14,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+import org.apache.log4j.spi.LoggerFactory;
+import weixin.popular.util.SignatureUtil;
 
 /**
  *
@@ -23,8 +25,8 @@ import org.slf4j.LoggerFactory;
  */
 public class WeChatAPI extends HttpServlet {
 
-    
-    private static Logger logger = LoggerFactory.getLogger(WeChatAPI.class);
+    private static Logger logger =  Logger.getLogger(WeChatAPI.class);
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -34,47 +36,38 @@ public class WeChatAPI extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-   
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         // 企业号的基本信息，配置时填写
         try {
-            
-            
 
-            //返回数据包中不能有任何其他信息，必须直接把校验串返回
-            WXBizMsgCrypt wxcpt = new WXBizMsgCrypt(WxCorpUtil.sToken, WxCorpUtil.sEncodingAESKey,
-                    WxCorpUtil.corpId);
-
+            
             // 解析出url上的参数值如下：
             String sVerifyMsgSig
-                    = request.getParameter("msg_signature");
+                    = request.getParameter("signature");
             String sVerifyTimeStamp
                     = request.getParameter("timestamp");
             String sVerifyNonce
                     = request.getParameter("nonce");
             String sVerifyEchoStr
-                    = request.getParameter("echostr"); 
+                    = request.getParameter("echostr");
             
+            logger.error(sVerifyNonce+" "+ sVerifyMsgSig+" "+sVerifyTimeStamp);
             
-            // String sVerifyMsgSig =
-            // "5c45ff5e21c57e6ad56bac8758b79b1d9ac89fd3";
-            // String sVerifyTimeStamp = "1409659589";
-            // String sVerifyNonce = "263014780";
-            // String sVerifyEchoStr =
-            // "P9nAzCzyDtyTWESHep1vC5X9xho/qYX3Zpb4yKa9SKld1DsH3Iyt3tP3zNdtp+4RPcs8TgAE7OaBO+FZXvnaqQ==";
-            String sEchoStr; // 需要返回的明文
+            String mytoken = SignatureUtil.generateEventMessageSignature("T5JKLxm1E4", sVerifyTimeStamp, sVerifyNonce);
 
-            sEchoStr = wxcpt.VerifyURL(sVerifyMsgSig, sVerifyTimeStamp, sVerifyNonce, sVerifyEchoStr);
-                        
-            // 验证URL成功，将sEchoStr返回
-            PrintWriter o = response.getWriter();
-            o.print((sEchoStr));
-            o.flush();
+            if (StringUtils.isNotBlank(mytoken) && StringUtils.equals(mytoken, sVerifyMsgSig)) {
+                logger.error("验证通过");
+                // 验证URL成功，将sEchoStr返回
+                PrintWriter o = response.getWriter();
+                o.print((sVerifyEchoStr));
+                o.flush();
+            } else {
+                logger.error("验证失败");
+            }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
 
@@ -132,23 +125,7 @@ public class WeChatAPI extends HttpServlet {
         String respXml = null;
         // 默认返回的文本消息内容         
         try {
-            WXBizMsgCrypt wxcpt = new WXBizMsgCrypt(WxCorpUtil.sToken, WxCorpUtil.sEncodingAESKey, WxCorpUtil.corpId);
-
-            String xml = WxCorpUtil.getDocXml(request.getInputStream());
-
-            String sVerifyMsgSig = request.getParameter("msg_signature");
-            String sVerifyTimeStamp = request.getParameter("timestamp");
-            String sVerifyNonce = request.getParameter("nonce");
-            String sMsg = wxcpt.DecryptMsg(sVerifyMsgSig, sVerifyTimeStamp, sVerifyNonce, xml);
-
-            Map<String, String> kv = WxCorpUtil.parseXml(sMsg);
-
-            if (kv.get("MsgType").equals("text")) {
-             
-            } else {
-               
-            }
-
+           
 
         } catch (Exception e) {
             logger.error(e.getMessage());
