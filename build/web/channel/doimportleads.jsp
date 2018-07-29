@@ -27,29 +27,29 @@
 <%@page import="java.io.Reader"%>
 <%@page import="java.io.InputStream"%>
 
-<%@ page contentType="text/html;charset=gb2312" language="java" %>\
-<%@page pageEncoding="gb2312" %>
+<%@ page contentType="text/html;charset=utf-8" language="java" %>\
+<%@page pageEncoding="utf-8" %>
 <%
 
     HashMap hm = new HashMap();
-    hm.put("±¦À´", "10");
-    hm.put("½Ý´ï", "13");
+    hm.put("å®æ¥", "10");
+    hm.put("æ·è¾¾", "13");
     hm.put("CC", "15");
-    hm.put("¸ß¶û·ò", "16");
-    hm.put("ÐÂËÙÌÚ", "20");
-    hm.put("È«ÐÂ±¦À´", "21");
-    hm.put("¸ß¶û·òR-Line", "22");
-    hm.put("¸ß¶û·ò¼ÎÂÃ", "23");
-    hm.put("È«ÐÂÒ»´úÂõÌÚ", "24");
-    hm.put("ÐÂËÙÌÚGLI", "25");
-    hm.put("ÐÂËÙÌÚR-Line", "26");
-    hm.put("ÎµÁì", "27");
-    hm.put("ÐÂ½Ý´ï", "28");
-    hm.put("Ì½¸è", "29");
-    hm.put("È«ÐÂÒ»´ú±¦À´", "30");
+    hm.put("é«˜å°”å¤«", "16");
+    hm.put("æ–°é€Ÿè…¾", "20");
+    hm.put("å…¨æ–°å®æ¥", "21");
+    hm.put("é«˜å°”å¤«R-Line", "22");
+    hm.put("é«˜å°”å¤«å˜‰æ—…", "23");
+    hm.put("å…¨æ–°ä¸€ä»£è¿ˆè…¾", "24");
+    hm.put("æ–°é€Ÿè…¾GLI", "25");
+    hm.put("æ–°é€Ÿè…¾R-Line", "26");
+    hm.put("è”šé¢†", "27");
+    hm.put("æ–°æ·è¾¾", "28");
+    hm.put("æŽ¢æ­Œ", "29");
+    hm.put("å…¨æ–°ä¸€ä»£å®æ¥", "30");
     hm.put("GTI", "7");
-    hm.put("ÂõÌÚ", "8");
-    hm.put("ËÙÌÚ£¨ÁìÏÈÐÍ¡¢¾«Ó¢ÐÍ£©", "9");
+    hm.put("è¿ˆè…¾", "8");
+    hm.put("é€Ÿè…¾ï¼ˆé¢†å…ˆåž‹ã€ç²¾è‹±åž‹ï¼‰", "9");
 
     WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
     JdbcTemplate jt = (JdbcTemplate) applicationContext.getBean("jdbcTemplate");
@@ -76,28 +76,33 @@
     int i = 1;
     PrintWriter pw = response.getWriter();
     String result = "";
+    try{
     for (SendLeadRecord slr : l) {
-        String mkey = getMediaKey(jt, slr.getMedia().replaceAll(" ", "").replaceAll("\t", "").replaceAll("¡¡", ""));
-        String ckey = getLeadtype(jt, slr.getCatetype().replaceAll(" ", "").replaceAll("\t", "").replaceAll("¡¡", ""),
-                slr.getHiname().replaceAll(" ", "").replaceAll("\t", "").replaceAll("¡¡", ""),
-                slr.getLowname().replaceAll(" ", "").replaceAll("\t", "").replaceAll("¡¡", ""),
-                slr.getMedia().replaceAll(" ", "").replaceAll("\t", "").replaceAll("¡¡", ""));
+        String mkey = getMediaKey(jt, slr.getMedia().replaceAll(" ", "").replaceAll("\t", "").replaceAll("ã€€", ""));
+        String ckey = getLeadtype(jt, slr.getCatetype().replaceAll(" ", "").replaceAll("\t", "").replaceAll("ã€€", ""),
+                slr.getHiname().replaceAll(" ", "").replaceAll("\t", "").replaceAll("ã€€", ""),
+                slr.getLowname().replaceAll(" ", "").replaceAll("\t", "").replaceAll("ã€€", ""),
+                slr.getMedia().replaceAll(" ", "").replaceAll("\t", "").replaceAll("ã€€", ""));
         Dealer d = getDealer(jt, slr.getDealercode());
         ip.append("{'Key':'").append(mkey).append("','RequestObjectList':"
                 + "[{'USER_KEY':'").append(mkey).append("','LEAD_TYPE':'").append(ckey)
                 .append("','SMART_CODE':'").append(getSmartCode(jt, ckey)).append("','MEDIA_LEAD_ID':'").append(mkey + "_" + RandomStringUtils.random(11, "ABCDEF0123456789")).append("',"
-                + "'CUSTOMER_NAME':'").append(slr.getName()).append("','GENDER':'1','MOBILE':'").append(slr.getMobile().replaceAll(" ", "").replaceAll("\t", "").replaceAll("¡¡", "")).append("',"
+                + "'CUSTOMER_NAME':'").append(slr.getName()).append("','GENDER':'1','MOBILE':'").append(slr.getMobile().replaceAll(" ", "").replaceAll("\t", "").replaceAll("ã€€", "")).append("',"
                 + "'EMAIL':'','BUY_PLAN_TIME_CODE':'0','PROVINCE':'").append(d.pid).append("','CITY':'").append(d.cid).append("',"
-                + "'FK_DEALER_ID':'").append(d.did).append("','SERIES':'").append(hm.get(slr.getSeries().replaceAll(" ", "").replaceAll("\t", "").replaceAll("¡¡", ""))).append("','MODEL':'',"
+                + "'FK_DEALER_ID':'").append(d.did).append("','SERIES':'").append(hm.get(slr.getSeries().replaceAll(" ", "").replaceAll("\t", "").replaceAll("ã€€", ""))).append("','MODEL':'',"
                 + "'ORDER_TIME':'").append(DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss")).append("','PHONE':'','BUSINESS_PHONE':'',"
                 + "'ADDRESS':'','CONTACT_METHOD':'','FAX':'','BIRTHDAY':'','PROFESSION':'',"
                 + "'INDUSTRY':'','CAR_COLOR':'','COMMENTS':''}]}");
         result = bis.getBasicHttpBindingIBaseInfoService().sendLeads(ip.toString());
         i++;
-        pw.println("µÚ" + i + "ÐÐ£º " + result+"<br/>");
+        pw.println("ç¬¬" + i + "è¡Œï¼š " + result+"<br/>");
         pw.flush();
         ip.setLength(0);
         java.lang.Thread.sleep(1000);
+    }
+    }catch(Exception e){
+        pw.println("ç¬¬" + (i-1) + "è¡Œï¼š æ•°æ®é”™è¯¯å¯¼å…¥é”™è¯¯ï¼Œè¯·æ£€æŸ¥åª’ä½“åˆ†ç±»æ˜¯å¦æ­£ç¡®ï¼Œç»é”€å•†ä»£ç æ˜¯å¦å­˜åœ¨");
+        pw.println(e);
     }
     pw.flush();
     pw.close();
@@ -128,7 +133,10 @@
 
     public Dealer getDealer(JdbcTemplate jt, String scode) {
         SqlRowSet rs = jt.queryForRowSet("SELECT  FK_CITY_ID, FK_PROVINCE_ID, DEALER_ID FROM viewDealerRegion where DEALER_CODE=?", scode);
-        rs.first();
+        if(!rs.next()){
+            rs = jt.queryForRowSet("SELECT  FK_CITY_ID, FK_PROVINCE_ID, DEALER_ID FROM viewDealerRegion where DEALER_CODE=?", scode);
+    
+        }
         Dealer d = new Dealer();
         d.cid = rs.getString("FK_CITY_ID");
         d.pid = rs.getString("FK_PROVINCE_ID");
@@ -143,3 +151,4 @@
         String cid;
     }
 %>
+
